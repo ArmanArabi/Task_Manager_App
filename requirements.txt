@@ -1,0 +1,9 @@
+fastapi[all] 
+alembic 
+passlib[bcrypt]
+pyjwt
+pytest
+flake8
+black
+faker
+APScheduler
