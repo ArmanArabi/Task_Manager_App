@@ -17,6 +17,7 @@ __pycache__/
 # Database (Local)
 *.sqlite3
 *.db
+postgres/data/
 
 # IDEs and Editors
 .vscode/

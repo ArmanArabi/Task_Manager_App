@@ -4,15 +4,16 @@ from task.routs import router as task_router
 from users.routes import router as user_router
 from auth.jwt import get_authenticated_user
 from fastapi.responses import JSONResponse
-from sqlalchemy.exc import SQLAlchemyError
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from datetime import datetime , timedelta
+from datetime import datetime , timedeltap
 from core.exceptions import setup_exception_handlers
+
 
 
 # APSschedule
 async def heartbeat_task():
     print(f"💓 Heartbeat: Server is alive at {datetime.now().strftime('%H:%M:%S')}")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,8 +29,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title='todo application',
     description='this is a webapp to manage daily task',
-    lifespan=lifespan
-)
+    lifespan=lifespan)
 
 
 # add routers
@@ -52,4 +52,8 @@ def root():
 def private_route(user=Depends(get_authenticated_user) ) :
     print(user.id)
     return {'this is a private route'}
+
+
+
+
 

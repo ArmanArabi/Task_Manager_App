@@ -1,7 +1,15 @@
-.git
+#database
+postgres/data
+
+# virtual envirments
+venv
+.env
+
+#python cache
 __pycache__
 *.pyc
-.env
 .vscode
-venv
+
+# git 
+.git
 .gitignore
