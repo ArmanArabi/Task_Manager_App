@@ -1,6 +1,4 @@
 
-version: "3.8"
-
 services:
   db:
     image: postgres:15-alpine
@@ -12,7 +10,7 @@ services:
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres123"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
       interval: 10s
       retries: 5
       start_period: 30s
@@ -23,12 +21,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend
+    environment:
+      - SQLALCHEMY_DATABASE_URL=postgresql://postgres:postgres123@db:5432/postgres
     depends_on:
       db:
         condition: service_healthy
     ports:
       - "8000:8000"
-    command: bash -c 'fastapi dev --host 0.0.0.0 --port 8000'
+    command: bash -c 'fastapi dev main.py --host 0.0.0.0 --port 8000'
     volumes:
       - .:/usr/src/app
     healthcheck:

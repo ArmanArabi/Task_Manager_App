@@ -53,7 +53,9 @@ def private_route(user=Depends(get_authenticated_user) ) :
     print(user.id)
     return {'this is a private route'}
 
-
+@app.get("/health")
+def health():
+    return {"message": "docker-compose health check!"}
 
 
 
