@@ -24,7 +24,12 @@ if config.config_file_name is not None:
 ## add our setup 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR/".env"
-load_dotenv(ENV_PATH)
+
+if ENV_PATH.exists():
+    load_dotenv(ENV_PATH)
+else:
+    print(f'Warnig !. .env file doent exist.use global variable')
+    
 DATABASE_URL = os.getenv('SQLALCHEMY_DATABASE_URL')  
 
 if DATABASE_URL:

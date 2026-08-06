@@ -5,7 +5,7 @@ from users.routes import router as user_router
 from auth.jwt import get_authenticated_user
 from fastapi.responses import JSONResponse
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from datetime import datetime , timedeltap
+from datetime import datetime , timedelta
 from core.exceptions import setup_exception_handlers
 
 
