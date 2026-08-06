@@ -26,11 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR/".env"
 load_dotenv(ENV_PATH)
 DATABASE_URL = os.getenv('SQLALCHEMY_DATABASE_URL')  
-
 if DATABASE_URL:
     config.set_main_option('sqlalchemy.url', DATABASE_URL)
 else:
-    raise ValueError('database url is not set in environment variables')
+    raise ValueError('DATABASE_URL is not set in environment variables or .env file')
 
 
 # add your model's MetaData object here
@@ -60,14 +59,15 @@ def run_migrations_offline() -> None:
 
     """
     url = config.get_main_option("sqlalchemy.url")
+    is_sqlite = url.startswith("sqlite")
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        render_as_batch=True
+        render_as_batch=is_sqlite 
     )
-
+    
     with context.begin_transaction():
         context.run_migrations()
 
@@ -85,9 +85,14 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
 
+    url = config.get_main_option("sqlalchemy.url")
+    is_sqlite = url.startswith("sqlite")
+
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata, render_as_batch=True
+            connection=connection,
+            target_metadata=target_metadata,
+            render_as_batch=is_sqlite  
         )
 
         with context.begin_transaction():
