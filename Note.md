@@ -1,10 +1,12 @@
-[x] this version work on sqlite database .
-[x] Added `psycopg2-binary` to requirements .
-[x] manage`connect_args` in `database.py`( postegress doent need) .
-[x] Djecrety website create jwt default value for `JWT-SECRET-KEY` param .
-[x] dockerfile modified  .
+[x]Delete all migration/versions , create a new migration to fix SQLite->Postgres
 
-[x] alembic->env.py : manage `render-as-batch`param in online and offline mode for sqllite and postergress modified.
+[x]set database URL  in `.env `file  from `SQLALCHEMY_DATABASE_URL = sqlite:///./sqlite.db` to `SQLALCHEMY_DATABASE_URL = postgresql://postgres:<username>@localhost:<port>/<db-name>`
 
 -- TODO --
-[ ] Verify migration logs in Docker .
+[ ] multistage docker build.
+
+[ ] redis cache.
+
+[ ] fix variable suitable name and change variable name to standard.
+
+[ ] UI/UX .
