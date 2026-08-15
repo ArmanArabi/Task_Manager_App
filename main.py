@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime , timedelta
 from core.exceptions import setup_exception_handlers
-
+from core.celery_conf import add_number
 
 
 # APSschedule
@@ -58,4 +58,9 @@ def health():
     return {"message": "docker-compose health check!"}
 
 
-
+@app.get('/initial-celery-task', status_code=200)
+def initial_celery_task():
+    add_number.delay(1,2)
+    return JSONResponse(content={"detail":'task is done'})
+    
+    

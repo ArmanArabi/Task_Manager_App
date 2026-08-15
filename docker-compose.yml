@@ -24,8 +24,8 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     environment:
-      - SQLALCHEMY_DATABASE_URL = postgresql://postgres:postgres123@db:5432/postgres
-      - JWT_SECRET_KEY = _gsxfr!-=v$53)8=x2j+=$*ij82s-gpig+5#l&vwvs50ni9%a=
+      - SQLALCHEMY_DATABASE_URL=postgresql://postgres:postgres123@db:5432/postgres
+      - JWT_SECRET_KEY=_gsxfr!-=v$53)8=x2j+=$*ij82s-gpig+5#l&vwvs50ni9%a=
     depends_on:
       db:
         condition: service_healthy
