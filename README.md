@@ -1,50 +1,44 @@
-Task Management API - Initial Base Version
+# 🚀 Performance Testing - Upload App (Locust Branch)
 
-This repository contains the core implementation of the Task Management System. This specific branch (`upload-app`) represents the initial stable version of the application, focused on establishing the project architecture and basic CRUD functionalities.
+This branch is dedicated to analyzing the system's performance and stability under high load using Locust. The main goal was to identify bottlenecks in the `/users/login` and `/tasks` endpoints and verify the system's behavior with multiple concurrent users.
 
-## 🎯 Project Objective
-The goal of this phase was to build a modular and scalable REST API using FastAPI, implementing a clean separation of concerns between the business logic, data models, and routing.
+## 🎯 Objectives
 
-## 🏗️ Current Architecture
-- Framework: FastAPI (Asynchronous Python Framework)
-- Database: SQLite (Lightweight, file-based storage for rapid development)
-- ORM: SQLAlchemy (For object-relational mapping and database abstraction)
-- Migrations: Alembic (Version control for database schema)
-- Authentication: JWT (JSON Web Tokens) for secure user access
+- Stress Testing: Evaluate how the system handles a high volume of concurrent requests.
+- Bottleneck Identification: Detect failures in authentication and task retrieval processes.
+- Metric Analysis: Measure Response Time, Failures, and Requests Per Second (RPS).
 
-## 🚀 Quick Start Guide
+## 🛠️ Setup & Installation
 
-### 1. Environment Setup
-Create a `.env` file in the root directory:
+### 1. Prerequisites
 
-SQLALCHEMY_DATABASE_URL=sqlite:///./sql_app.db
-SECRET_KEY=your_super_secret_key_here
-ALGORITHM=HS256
+- Docker and Docker Compose installed.
+- Python 3.x installed (if running Locust locally).
 
+### 2. Running the Tests
 
-### 2. Installation
-Install the required dependencies:
+To start the application and the Locust load generator, use the following command:
 
-pip install -r requirements.txt
+docker-compose up -d
 
+Then, access the Locust web interface at: `http://localhost:8089`
 
-### 3. Running the Application
-Start the server using Uvicorn:
+## 🧪 Test Scenario
 
-uvicorn app.main:app --reload
+- User Behavior:
+  - Login: Simulating users authenticating via the `/users/login` endpoint.
+  - Task Management: Simulating users fetching and managing their tasks via the `/tasks` endpoint.
+- Load Configuration:
+  - Max Users: 10 (Adjustable via UI)
+  - Spawn Rate: 1 user/sec
 
-The API documentation (Swagger UI) will be available at: `http://127.0.0.1:8000/docs`
+## 📊 Observations & Results
 
-## 🛠️ Implemented Features
-User Management: Registration, Login, and Profile management.
+- Authentication Stress: Observed high failure rates in the `/users/login` endpoint during peak loads, which indicated issues with session/token management or database locking.
+- Performance Gap: Identified a significant difference between successful requests and total requests under stress.
+- Stability: The system remains stable, but response times increase as the number of concurrent users grows.
 
-Task Lifecycle: Create, Read, Update, and Delete tasks.
-      
-Database Migrations: Basic schema setup using Alembic.
-     
-Dependency Injection: Implementation of modular database sessions.
+## 📝 Key Findings
 
-## 📌 Developer's Note
-This version uses SQLite, which is ideal for local development and prototyping. Future iterations of this project will migrate to PostgreSQL to support high-concurrency environments and advanced data types.
-
----
+- The `on_start` method in the Locust file was critical for simulating a real user journey (Login $\rightarrow$ Use API).
+- The importance of differentiating between "Virtual Users" and "Total Requests" was highlighted during the analysis.

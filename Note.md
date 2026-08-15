@@ -1,8 +1,11 @@
-[x]Delete all migration/versions , create a new migration to fix SQLite->Postgres
+[x]install `locust` to see the root performance under 5/10 user simulatation
 
-[x]set database URL  in `.env `file  from `SQLALCHEMY_DATABASE_URL = sqlite:///./sqlite.db` to `SQLALCHEMY_DATABASE_URL = postgresql://postgres:<username>@localhost:<port>/<db-name>`
+
 
 -- TODO --
+
+[-] Celery and RabbitMQ.
+
 [ ] multistage docker build.
 
 [ ] redis cache.

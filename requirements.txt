@@ -9,3 +9,4 @@ black
 faker
 APScheduler
 psycopg2-binary
+locust
