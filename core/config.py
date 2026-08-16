@@ -4,7 +4,7 @@ import os
 class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URL: str 
     JWT_SECRET_KEY:str = 'test'
-    CELERY_BROKER_URL:str = 'redis://redis:6379/3', #redis://localhost<service name>:port/database number 
+    CELERY_BROKER_URL:str = 'redis://redis:6379/3' #redis://localhost<service name>:port/database number 
     CELERY_BACKEND_URL:str = 'redis://redis:6379/3'
     
     model_config = SettingsConfigDict(
