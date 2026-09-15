@@ -10,3 +10,6 @@ faker
 APScheduler
 psycopg2-binary
 locust
+celery
+redis
+flower

@@ -18,6 +18,7 @@ services:
       start_period: 30s
       timeout: 10s
 
+
   backend:
     build:
       context: .
@@ -26,6 +27,7 @@ services:
     environment:
       - SQLALCHEMY_DATABASE_URL=postgresql://postgres:postgres123@db:5432/postgres
       - JWT_SECRET_KEY=_gsxfr!-=v$53)8=x2j+=$*ij82s-gpig+5#l&vwvs50ni9%a=
+      - REDIS_URL=redis://redis:6379
     depends_on:
       db:
         condition: service_healthy
@@ -41,6 +43,7 @@ services:
       start_period: 30s
       timeout: 10s
 
+
   locust:
     image: locustio/locust
     ports:
@@ -50,3 +53,57 @@ services:
     command: -f /mnt/locust/locustfile.py 
     depends_on:
       - backend
+  
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    environment:
+      - SQLALCHEMY_DATABASE_URL=postgresql://postgres:postgres123@db:5432/postgres
+      - JWT_SECRET_KEY=_gsxfr!-=v$53)8=x2j+=$*ij82s-gpig+5#l&vwvs50ni9%a=
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    command: bash -c 'celery -A core.celery_conf worker --loglevel=info'
+    volumes:
+      - .:/usr/src/app
+  
+
+  celery_beat:
+    build:
+      context: .      
+      dockerfile: Dockerfile
+    container_name: celery_beat
+    environment:
+      - SQLALCHEMY_DATABASE_URL=postgresql://postgres:postgres123@db:5432/postgres
+      - JWT_SECRET_KEY=_gsxfr!-=v$53)8=x2j+=$*ij82s-gpig+5#l&vwvs50ni9%a=
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    command: celery -A core.celery_conf beat --loglevel=info
+    volumes:
+      - .:/usr/src/app
+  
+
+  flower:
+    image: mher/flower:latest
+    container_name: celery_flower
+    command: celery --broker=redis://redis:6379/0 flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on: 
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    restart: always
